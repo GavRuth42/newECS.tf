@@ -114,6 +114,13 @@ resource "aws_ecs_task_definition" "socialAPP" {
         "containerPort": 3000,
         "hostPort": 3000
       }
+            {
+        "containerPort": 3001,
+        "hostPort": 3001
+      },
+      {
+        "containerPort": 3002,
+        "hostPort": 3002
     ]
   }
 ]
@@ -129,7 +136,18 @@ resource "aws_security_group" "socialAPP_task" {
     to_port         = 3000
     security_groups = [aws_security_group.lb.id]
   }
-
+  ingress {
+    protocol        = "tcp"
+    from_port       = 3001
+    to_port         = 3001
+    security_groups = [aws_security_group.lb.id]
+  }
+    ingress {
+    protocol        = "tcp"
+    from_port       = 3002
+    to_port         = 3002
+    security_groups = [aws_security_group.lb.id]
+  }
   egress {
     protocol    = "-1"
     from_port   = 0
